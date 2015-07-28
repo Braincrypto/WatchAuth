@@ -11,12 +11,15 @@ import android.view.MotionEvent;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sri.csl.cortical.watchauth.logging.Logger;
 import com.sri.csl.cortical.watchauth.logging.SensorLogger;
 import com.sri.csl.cortical.watchauth.logging.TapLogger;
 import com.sri.csl.cortical.watchauth.logging.WearSensorLogger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
 public class TapActivity extends Activity implements TapView.TapListener {
@@ -108,12 +111,21 @@ public class TapActivity extends Activity implements TapView.TapListener {
     }
 
     void loadTrial() throws IOException {
-        InputStream in;
-        Resources resources = getResources();
+        File userTrial = new File(Logger.LOG_DIR, "trial.csv");
+        byte[] buffer;
 
-        in = resources.openRawResource(R.raw.trial);
-        byte[] buffer = new byte[in.available()];
-        in.read(buffer);
+        if(userTrial.canRead()) {
+            RandomAccessFile f = new RandomAccessFile(userTrial, "r");
+            buffer = new byte[(int)f.length()];
+            f.read(buffer);
+        } else {
+            InputStream in;
+            Resources resources = getResources();
+
+            in = resources.openRawResource(R.raw.trial);
+            buffer = new byte[in.available()];
+            in.read(buffer);
+        }
 
         player = new TrialPlayer(new Trial(new String(buffer)));
     }

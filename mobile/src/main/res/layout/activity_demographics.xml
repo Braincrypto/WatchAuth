@@ -129,7 +129,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignRight="@+id/linearLayout"
                 android:layout_alignEnd="@+id/linearLayout"
-                android:enabled="true"
+                android:enabled="false"
                 android:onClick="nextScreen" />
 
         </LinearLayout>
