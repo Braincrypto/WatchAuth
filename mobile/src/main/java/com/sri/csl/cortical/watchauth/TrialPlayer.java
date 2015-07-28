@@ -67,7 +67,11 @@ public class TrialPlayer {
         }
 
         TrialEvent event = trial.events[currentEvent];
-        return "Please tap the sequence " + event.seqString + ", "
-                + (event.repetitions - repetitionsCompleted) + " more times.";
+        return "Please tap the sequence [" + event.seqString + "], "
+                + (event.repetitions - repetitionsCompleted) + " times.";
+    }
+
+    public String stateCsv() {
+        return String.format("%d,%d,%d", currentEvent + 1, placeInSequence, repetitionsCompleted);
     }
 }

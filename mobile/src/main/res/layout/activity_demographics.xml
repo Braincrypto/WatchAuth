@@ -23,39 +23,12 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/survey_age" />
 
-            <RadioGroup
-                android:layout_width="match_parent"
+            <EditText
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/age">
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/age0"
-                    android:id="@+id/age0"
-                    android:checked="false"/>
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/age18"
-                    android:id="@+id/age18"
-                    android:checked="false"/>
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/age25"
-                    android:id="@+id/age25"
-                    android:checked="false"/>
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/age50"
-                    android:id="@+id/age50"
-                    android:checked="false" />
-            </RadioGroup>
+                android:inputType="number"
+                android:ems="4"
+                android:id="@+id/age" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -109,13 +82,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/hand_left"
                     android:id="@+id/hand_left"
-                    android:checked="false"/>
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/hand_ambidextrous"
-                    android:id="@+id/hand_ambidextrous"
                     android:checked="false"/>
             </RadioGroup>
 

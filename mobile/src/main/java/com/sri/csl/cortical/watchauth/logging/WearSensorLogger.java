@@ -12,6 +12,7 @@ public class WearSensorLogger extends SensorLogger {
     RemoteSensorManager manager;
     public WearSensorLogger(Context ctx) {
         super("wear.csv");
+        out.println("androidTime,wearTime,v0,v1,v2");
 
         manager = RemoteSensorManager.getInstance(ctx);
     }
@@ -35,6 +36,6 @@ public class WearSensorLogger extends SensorLogger {
     }
 
     private void logAccelerometer(long timestamp, float[] values) {
-        out.printf("%d,%f,%f,%f\n", timestamp, values[0], values[1], values[2]);
+        out.printf("%d,%d,%f,%f,%f\n", System.nanoTime(), timestamp, values[0], values[1], values[2]);
     }
 }

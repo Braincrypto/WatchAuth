@@ -10,11 +10,12 @@ class TrialEvent {
 
         String[] seqStrings = sequence.split(";");
         this.sequence = new int[seqStrings.length];
+        this.seqString = "";
 
         for (int i = 0; i < seqStrings.length; i++) {
             this.sequence[i] = Integer.parseInt(seqStrings[i]);
+            if(i > 0) { this.seqString += ","; }
+            this.seqString += FingerNames.fingerName(this.sequence[i]);
         }
-
-        this.seqString = sequence.replace(";", ", then ");
     }
 }

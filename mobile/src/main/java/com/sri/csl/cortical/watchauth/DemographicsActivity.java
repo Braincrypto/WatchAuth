@@ -3,9 +3,12 @@ package com.sri.csl.cortical.watchauth;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -14,14 +17,15 @@ import com.sri.csl.cortical.watchauth.logging.Logger;
 
 public class DemographicsActivity extends Activity {
 
-    RadioGroup age, gender, hand, watch;
+    EditText age;
+    RadioGroup gender, hand, watch;
     Button nextButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demographics);
-        age = (RadioGroup) findViewById(R.id.age);
+        age = (EditText) findViewById(R.id.age);
         gender = (RadioGroup) findViewById(R.id.gender);
         hand = (RadioGroup) findViewById(R.id.hand);
         watch = (RadioGroup) findViewById(R.id.watch);
@@ -34,7 +38,18 @@ public class DemographicsActivity extends Activity {
             }
         };
 
-        age.setOnCheckedChangeListener(listener);
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                radioButtonSelected();
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        };
+
+        age.addTextChangedListener(watcher);
         gender.setOnCheckedChangeListener(listener);
         hand.setOnCheckedChangeListener(listener);
         watch.setOnCheckedChangeListener(listener);
@@ -45,7 +60,7 @@ public class DemographicsActivity extends Activity {
     }
 
     public void nextScreen(View view) {
-        String age = getRadioLabel(this.age);
+        int age = Integer.parseInt(this.age.getText().toString());
         String gender = getRadioLabel(this.gender);
         String hand = getRadioLabel(this.hand);
 
@@ -55,6 +70,8 @@ public class DemographicsActivity extends Activity {
         } else {
             TapActivity.loggingType = TapActivity.LOGGING_TYPE.WEAR;
         }
+
+        FingerNames.hand = FingerNames.HANDS.valueOf(hand.toUpperCase());
 
         Logger.newSession(this);
         Logger.logDemographics(age, gender, hand);
@@ -69,8 +86,18 @@ public class DemographicsActivity extends Activity {
         return button.getText().toString();
     }
 
+    private boolean ageValid() {
+        try {
+            int age = Integer.parseInt(this.age.getText().toString());
+
+            return (age > 0 || age < 1000);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private boolean isFormFilledOut() {
-        return age.getCheckedRadioButtonId() != -1 && gender.getCheckedRadioButtonId() != -1 &&
+        return ageValid() && gender.getCheckedRadioButtonId() != -1 &&
                 hand.getCheckedRadioButtonId() != -1 && watch.getCheckedRadioButtonId() != -1;
     }
 }

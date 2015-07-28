@@ -8,10 +8,14 @@ import android.graphics.RectF;
 public class CommonDrawing {
     public static final int BOX_SIZE=160;
 
-    public static void drawBox(Canvas canvas, RectF rect, boolean filled, int color) {
-        Paint paint = new Paint();
-        paint.setColor(color);
+    public static Paint paint;
+    static {
+        paint = new Paint();
         paint.setStrokeWidth(10);
+    }
+
+    public static void drawBox(Canvas canvas, RectF rect, boolean filled, int color) {
+        paint.setColor(color);
         paint.setStyle(filled ? Paint.Style.FILL_AND_STROKE : Paint.Style.STROKE);
         canvas.drawRect(rect, paint);
     }

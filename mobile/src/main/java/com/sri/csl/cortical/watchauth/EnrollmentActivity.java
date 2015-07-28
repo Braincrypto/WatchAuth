@@ -21,6 +21,9 @@ public class EnrollmentActivity extends Activity implements EnrollmentView.Enrol
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        goImmersive();
+
         setContentView(R.layout.activity_enrollment);
 
         view = (EnrollmentView) this.findViewById(R.id.enrollment_view);
@@ -48,6 +51,7 @@ public class EnrollmentActivity extends Activity implements EnrollmentView.Enrol
 
     public void onResume() {
         super.onResume();
+        goImmersive();
         view.reset();
         handler.post(updateView);
     }
@@ -55,5 +59,15 @@ public class EnrollmentActivity extends Activity implements EnrollmentView.Enrol
     public void onPause() {
         super.onPause();
         handler.removeCallbacks(updateView);
+    }
+
+    public void goImmersive() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 }

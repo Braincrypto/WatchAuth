@@ -7,6 +7,9 @@ import android.os.Environment;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Logger {
     public static final File LOG_DIR = new File(Environment.getExternalStorageDirectory(), "watchauth");
@@ -37,12 +40,16 @@ public class Logger {
         return sessionID;
     }
 
-    public static void logDemographics(String age, String gender, String hand) {
+    public static void logDemographics(int age, String gender, String hand) {
         PrintWriter out = null;
         try {
             out = new PrintWriter(new File(sessionDirectory(), "demographics.txt"));
         } catch (FileNotFoundException e) {
         }
+
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+        out.println("Current time: " + format.format(new Date()));
         out.println("Age: " + age);
         out.println("Gender: " + gender);
         out.println("Handedness: " + hand);

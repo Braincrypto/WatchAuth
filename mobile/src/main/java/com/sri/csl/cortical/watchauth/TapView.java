@@ -3,6 +3,7 @@ package com.sri.csl.cortical.watchauth;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -19,6 +20,7 @@ public class TapView extends View {
     private SparseArray<TouchBox> touches;
     private int rectToHighlight;
     private TapListener listener;
+    private Paint textPaint;
 
     public interface TapListener {
         void onTap(TouchBox box);
@@ -31,9 +33,12 @@ public class TapView extends View {
     }
 
     private void init(Context context) {
-        fingerRects = null;
+        fingerRects = new RectF[0];
         touches = new SparseArray<>(5);
         rectToHighlight = -1;
+        textPaint = new Paint();
+        textPaint.setTextAlign(Paint.Align.CENTER);
+        textPaint.setTextSize(24f);
     }
 
     public void setTouchBoxes(ArrayList<RectF> rects) {
@@ -138,6 +143,11 @@ public class TapView extends View {
 
         for (int i = 0; i < fingerRects.length; i++) {
             CommonDrawing.drawBox(canvas, fingerRects[i], (i == rectToHighlight), Color.BLACK);
+            textPaint.setColor(i == rectToHighlight ? Color.WHITE : Color.BLACK);
+            canvas.drawText(FingerNames.fingerName(i),
+                    fingerRects[i].centerX(),
+                    fingerRects[i].centerY(),
+                    textPaint);
         }
     }
 }

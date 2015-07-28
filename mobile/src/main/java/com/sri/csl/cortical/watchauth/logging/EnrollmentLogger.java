@@ -15,8 +15,9 @@ public class EnrollmentLogger {
         } catch (FileNotFoundException e) {
         }
 
+        out.println("left,top,right,bottom");
         for(RectF rect : rects) {
-            out.println(rect.toString());
+            out.printf("%f,%f,%f,%f\n", rect.left, rect.top, rect.right, rect.bottom);
         }
         out.close();
     }

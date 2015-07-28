@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 
 public class TapActivity extends Activity implements TapView.TapListener {
 
+    public enum LOGGING_TYPE { PEBBLE, WEAR}
+
     public static final String TOUCH_BOXES = "com.sri.csl.cortical.watchauth.TOUCH_BOXES";
     private static final String TAG = "TapActivity";
     public static LOGGING_TYPE loggingType = null;
@@ -39,6 +42,7 @@ public class TapActivity extends Activity implements TapView.TapListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        goImmersive();
         setContentView(R.layout.activity_tap);
         Intent intent = getIntent();
         ArrayList<RectF> rects = intent.getParcelableArrayListExtra(TOUCH_BOXES);
@@ -82,6 +86,7 @@ public class TapActivity extends Activity implements TapView.TapListener {
 
     protected void onResume() {
         super.onResume();
+        goImmersive();
         sensorLogger.startLogging();
         handler.postDelayed(waitForSensor, 1000/ 10);
     }
@@ -89,16 +94,16 @@ public class TapActivity extends Activity implements TapView.TapListener {
     protected void onPause() {
         super.onPause();
         sensorLogger.stopLogging();
+        tapLogger.close();
+        sensorLogger.close();
     }
 
     @Override
     public void onTap(TouchBox box) {
         player.hitTarget(box.touchedRect);
-        tapLogger.recordTap(box);
+        tapLogger.recordTap(box, player);
 
         if(player.done()) {
-            tapLogger.close();
-            sensorLogger.close();
             Intent intent = new Intent(this, FinishedActivity.class);
             startActivity(intent);
             return;
@@ -137,5 +142,13 @@ public class TapActivity extends Activity implements TapView.TapListener {
         player = new TrialPlayer(new Trial(new String(buffer)));
     }
 
-    public enum LOGGING_TYPE { PEBBLE, WEAR}
+    public void goImmersive() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
 }

@@ -3,6 +3,7 @@ package com.sri.csl.cortical.watchauth.logging;
 import android.view.MotionEvent;
 
 import com.sri.csl.cortical.watchauth.TouchBox;
+import com.sri.csl.cortical.watchauth.TrialPlayer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,12 +15,15 @@ public class TapLogger {
     public TapLogger() {
         try {
             taps = new PrintWriter(new File(Logger.sessionDirectory(), "taps.csv"));
+            taps.println(csvHeader());
         }
         catch (FileNotFoundException e) {}
     }
 
-    public void recordTap(TouchBox box) {
-        taps.println(box.toCsv());
+    public void recordTap(TouchBox box, TrialPlayer player) {
+        taps.print(box.toCsv());
+        taps.print(",");
+        taps.println(player.stateCsv());
     }
 
     public void recordMotionEvent(MotionEvent event) {
@@ -28,5 +32,9 @@ public class TapLogger {
 
     public void close() {
         taps.close();
+    }
+
+    public static String csvHeader() {
+        return "x,y,startTime,finishTime,rect,line,placeInSequence,repsCompleted";
     }
 }
