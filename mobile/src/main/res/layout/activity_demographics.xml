@@ -67,7 +67,6 @@
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="radioButtonSelected"
                 android:id="@+id/gender">
 
                 <RadioButton
@@ -95,7 +94,6 @@
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="radioButtonSelected"
                 android:id="@+id/hand">
 
 
@@ -121,14 +119,38 @@
                     android:checked="false"/>
             </RadioGroup>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/survey_watch"
+                android:id="@+id/survey_watch" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/watch">
+
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/watch_pebble"
+                    android:id="@+id/watch_pebble"
+                    android:checked="false"/>
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/watch_wear"
+                    android:id="@+id/watch_wear"
+                    android:checked="false"/>
+            </RadioGroup>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/next"
                 android:id="@+id/next"
-                android:layout_alignParentBottom="true"
-                android:layout_alignRight="@+id/linearLayout"
-                android:layout_alignEnd="@+id/linearLayout"
                 android:enabled="false"
                 android:onClick="nextScreen" />
 

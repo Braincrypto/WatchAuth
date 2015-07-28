@@ -14,7 +14,8 @@ import com.sri.csl.cortical.watchauth.logging.Logger;
 
 public class DemographicsActivity extends Activity {
 
-    RadioGroup age, gender, hand;
+    RadioGroup age, gender, hand, watch;
+    Button nextButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,8 @@ public class DemographicsActivity extends Activity {
         age = (RadioGroup) findViewById(R.id.age);
         gender = (RadioGroup) findViewById(R.id.gender);
         hand = (RadioGroup) findViewById(R.id.hand);
+        watch = (RadioGroup) findViewById(R.id.watch);
+        nextButton = (Button) findViewById(R.id.next);
 
         RadioGroup.OnCheckedChangeListener listener = new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -34,10 +37,10 @@ public class DemographicsActivity extends Activity {
         age.setOnCheckedChangeListener(listener);
         gender.setOnCheckedChangeListener(listener);
         hand.setOnCheckedChangeListener(listener);
+        watch.setOnCheckedChangeListener(listener);
     }
 
     public void radioButtonSelected() {
-        Button nextButton = (Button) findViewById(R.id.next);
         nextButton.setEnabled(isFormFilledOut());
     }
 
@@ -45,6 +48,13 @@ public class DemographicsActivity extends Activity {
         String age = getRadioLabel(this.age);
         String gender = getRadioLabel(this.gender);
         String hand = getRadioLabel(this.hand);
+
+        if(watch.getCheckedRadioButtonId() == R.id.watch_pebble)
+        {
+            TapActivity.loggingType = TapActivity.LOGGING_TYPE.PEBBLE;
+        } else {
+            TapActivity.loggingType = TapActivity.LOGGING_TYPE.WEAR;
+        }
 
         Logger.newSession(this);
         Logger.logDemographics(age, gender, hand);
@@ -61,6 +71,6 @@ public class DemographicsActivity extends Activity {
 
     private boolean isFormFilledOut() {
         return age.getCheckedRadioButtonId() != -1 && gender.getCheckedRadioButtonId() != -1 &&
-                hand.getCheckedRadioButtonId() != -1;
+                hand.getCheckedRadioButtonId() != -1 && watch.getCheckedRadioButtonId() != -1;
     }
 }

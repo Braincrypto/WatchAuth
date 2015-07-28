@@ -8,6 +8,7 @@
     <string name="survey_age">Select your age:</string>
     <string name="survey_gender">Select your gender:</string>
     <string name="survey_hand">Select your dominant hand:</string>
+    <string name="survey_watch">What kind of watch are you wearing?</string>
     <string name="age0">0 &#8211; 17</string>
     <string name="age18">18 &#8211; 24</string>
     <string name="age25">25 &#8211; 49</string>
@@ -17,7 +18,10 @@
     <string name="hand_right">Right</string>
     <string name="hand_left">Left</string>
     <string name="hand_ambidextrous">Ambidextrous</string>
+    <string name="watch_pebble">Pebble</string>
+    <string name="watch_wear">Android Wear</string>
     <string name="next">Next</string>
+
 
     <string name="enrollment_greeting">Please rest the fingers and thumb of your left hand on the grey area below in a natural position and leave them there until all the boxes change color.</string>
     <string name="tap_greeting">Are you ready guys? Put ya guns on.</string>

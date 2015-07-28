@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sri.csl.cortical.watchauth.logging.Logger;
+import com.sri.csl.cortical.watchauth.logging.PebbleSensorLogger;
 import com.sri.csl.cortical.watchauth.logging.SensorLogger;
 import com.sri.csl.cortical.watchauth.logging.TapLogger;
 import com.sri.csl.cortical.watchauth.logging.WearSensorLogger;
@@ -26,6 +27,7 @@ public class TapActivity extends Activity implements TapView.TapListener {
 
     public static final String TOUCH_BOXES = "com.sri.csl.cortical.watchauth.TOUCH_BOXES";
     private static final String TAG = "TapActivity";
+    public static LOGGING_TYPE loggingType = null;
     private TapView view;
     private TrialPlayer player;
     private TextView prompt;
@@ -57,7 +59,12 @@ public class TapActivity extends Activity implements TapView.TapListener {
         updateView();
 
         tapLogger = new TapLogger();
-        sensorLogger = new WearSensorLogger(this);
+
+        if(loggingType == LOGGING_TYPE.PEBBLE) {
+            sensorLogger = new PebbleSensorLogger(this);
+        } else {
+            sensorLogger = new WearSensorLogger(this);
+        }
 
         handler = new Handler();
         waitForSensor = new Runnable() {
@@ -129,4 +136,6 @@ public class TapActivity extends Activity implements TapView.TapListener {
 
         player = new TrialPlayer(new Trial(new String(buffer)));
     }
+
+    public enum LOGGING_TYPE { PEBBLE, WEAR}
 }
