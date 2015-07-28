@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">WatchAuth</string>
+
+    <string name="title_activity_tap">TapActivity</string>
+    <string name="title_activity_enrollment">EnrollmentActivity</string>
+    <string name="title_activity_finished">FinishedActivity</string>
+
+    <string name="survey_age">Select your age:</string>
+    <string name="survey_gender">Select your gender:</string>
+    <string name="survey_hand">Select your dominant hand:</string>
+    <string name="age0">0 &#8211; 17</string>
+    <string name="age18">18 &#8211; 24</string>
+    <string name="age25">25 &#8211; 49</string>
+    <string name="age50">50+</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="hand_right">Right</string>
+    <string name="hand_left">Left</string>
+    <string name="hand_ambidextrous">Ambidextrous</string>
+    <string name="next">Next</string>
+
+    <string name="enrollment_greeting">Please rest the fingers and thumb of your left hand on the grey area below in a natural position and leave them there until all the boxes change color.</string>
+    <string name="tap_greeting">Are you ready guys? Put ya guns on.</string>
+    <string name="thanks_for_playing">All done! Thanks for playing!</string>
+</resources>
