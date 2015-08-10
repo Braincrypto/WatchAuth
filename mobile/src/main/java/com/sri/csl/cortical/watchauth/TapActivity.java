@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sri.csl.cortical.watchauth.logging.AndroidAccelLogger;
 import com.sri.csl.cortical.watchauth.logging.Logger;
 import com.sri.csl.cortical.watchauth.logging.PebbleSensorLogger;
 import com.sri.csl.cortical.watchauth.logging.SensorLogger;
@@ -35,9 +36,11 @@ public class TapActivity extends Activity implements TapView.TapListener {
     private TrialPlayer player;
     private TextView prompt;
     private TapLogger tapLogger;
+    private AndroidAccelLogger accelLogger;
     private SensorLogger sensorLogger;
     private Handler handler;
     private Runnable waitForSensor;
+    private Runnable launchNext = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class TapActivity extends Activity implements TapView.TapListener {
         updateView();
 
         tapLogger = new TapLogger();
+        accelLogger = new AndroidAccelLogger(this);
 
         if(loggingType == LOGGING_TYPE.PEBBLE) {
             sensorLogger = new PebbleSensorLogger(this);
@@ -74,7 +78,7 @@ public class TapActivity extends Activity implements TapView.TapListener {
         waitForSensor = new Runnable() {
             @Override
             public void run() {
-                if (sensorLogger.hasRecordedData()) {
+                if (sensorLogger.hasRecordedData() && accelLogger.hasRecordedData()) {
                     player.ready();
                     updateView();
                 } else {
@@ -87,12 +91,14 @@ public class TapActivity extends Activity implements TapView.TapListener {
     protected void onResume() {
         super.onResume();
         goImmersive();
+        accelLogger.startLogging();
         sensorLogger.startLogging();
         handler.postDelayed(waitForSensor, 1000/ 10);
     }
 
     protected void onPause() {
         super.onPause();
+        accelLogger.stopLogging();
         sensorLogger.stopLogging();
         tapLogger.close();
         sensorLogger.close();
@@ -103,10 +109,15 @@ public class TapActivity extends Activity implements TapView.TapListener {
         player.hitTarget(box.touchedRect);
         tapLogger.recordTap(box, player);
 
-        if(player.done()) {
-            Intent intent = new Intent(this, FinishedActivity.class);
-            startActivity(intent);
-            return;
+        if(player.done() && launchNext == null) {
+            Activity act = this;
+            launchNext = new Runnable() {
+                public void run() {
+                    Intent intent = new Intent(act, FinishedActivity.class);
+                    startActivity(intent);
+                }
+            };
+            handler.postDelayed(launchNext, 1000);
         }
 
         updateView();

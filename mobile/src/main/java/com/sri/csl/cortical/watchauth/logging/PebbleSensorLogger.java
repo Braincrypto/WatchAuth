@@ -16,20 +16,21 @@ public class PebbleSensorLogger extends SensorLogger {
         @Override
         public void receiveData(Context context, int transactionId, PebbleDictionary data) {
             PebbleKit.sendAckToPebble(context, transactionId);
+            long now = System.nanoTime();
 
             for(int i = 0; i < data.size(); i++) {
                 byte[] bytes = data.getBytes(i);
                 if(bytes != null) {
                     PebbleAccelData accel = new PebbleAccelData(bytes);
-                    delegate.logAccelData(accel);
+                    delegate.logAccelData(accel, now);
                 }
             }
         }
     }
 
-    private void logAccelData(PebbleAccelData accel) {
+    private void logAccelData(PebbleAccelData accel, long now) {
         hasRecordedData = true;
-        out.printf("%d,%d,%d,%d,%d\n", System.nanoTime(), accel.timestamp, accel.x, accel.y, accel.z);
+        out.printf("%d,%d,%d,%d,%d\n", now, accel.timestamp, accel.x, accel.y, accel.z);
     }
 
     private PebbleKit.PebbleDataReceiver receiver;
