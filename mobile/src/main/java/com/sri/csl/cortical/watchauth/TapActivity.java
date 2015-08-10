@@ -110,7 +110,7 @@ public class TapActivity extends Activity implements TapView.TapListener {
         tapLogger.recordTap(box, player);
 
         if(player.done() && launchNext == null) {
-            Activity act = this;
+            final Activity act = this;
             launchNext = new Runnable() {
                 public void run() {
                     Intent intent = new Intent(act, FinishedActivity.class);
